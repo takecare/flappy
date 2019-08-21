@@ -2,8 +2,8 @@ require 'Pipe'
 
 PipePair = Class{}
 
-local HEIGHT_DIFF = 10
-local MIN_GAP = 20
+local HEIGHT_DIFF = 0
+local MIN_GAP = 60
 
 function PipePair:init(sprite, lastY, scrollSpeed)
     self.scrollSpeed = scrollSpeed
@@ -12,7 +12,7 @@ function PipePair:init(sprite, lastY, scrollSpeed)
     local height = sprite:getHeight()
 
     local x = virtualWidth + sprite:getWidth()
-    local y = lastY - height -- need to subtract height due to the rotation
+    local y = -height + lastY
     local topY = y + HEIGHT_DIFF * randomSign
     local bottomY = topY + height + HEIGHT_DIFF * (randomSign * -1)
 

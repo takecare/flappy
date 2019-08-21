@@ -2,8 +2,8 @@ Pipe = Class{}
 
 function Pipe:init(sprite, x, y, scrollSpeed)
     self.sprite = sprite
-    self.x = x ~= nil and x or virtualWidth + sprite:getWidth() * 2
-    self.y = y ~= nil and y or math.random(virtualHeight / 4, virtualHeight - 10)
+    self.x = x
+    self.y = y
     self.width = sprite:getWidth()
     self.height = sprite:getHeight()
     self.scrollSpeed = scrollSpeed
@@ -16,13 +16,13 @@ end
 function Pipe:renderAsTop()
     love.graphics.draw(
         self.sprite,
-        self.x + self.width,
-        self.y + self.height,
+        self.x,
+        self.y,
         math.rad(180),
         1,
         1,
-        0,--self.width / 2,
-        0--self.height / 2
+        self.width,
+        self.height
     )
 end
 

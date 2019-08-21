@@ -83,6 +83,8 @@ end
 function love.keypressed(key)
     if key == 'escape' then
         love.event.quit()
+    elseif key == 'd' then
+        debug.debug()
     else
         player:keypressed(key)
     end
@@ -102,7 +104,8 @@ function love.draw()
 
     player:render()
 
--- pp:render()
+pp:render()
+love.graphics.rectangle('fill', virtualWidth/2, virtualHeight/2, 50, 10)
 
     push:apply("end")
 end
