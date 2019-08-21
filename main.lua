@@ -21,9 +21,6 @@ local groundScroll = 0
 local GROUND_SCROLL_SPEED = 30
 
 function love.load()
-    -- set love's default filter to "nearest-neighbor", which essentially
-    -- means there will be no filtering of pixels (blurriness), which is
-    -- important for a nice crisp, 2D look
     love.graphics.setDefaultFilter('nearest', 'nearest')
 
     love.window.setTitle('bird')
@@ -42,8 +39,6 @@ function love.load()
         vsync = true,
         pixelperfect = true
     })
-
-    -- ...
 end
 
 function love.resize(w, h)
@@ -63,22 +58,18 @@ function love.update(dt)
         % BACKGROUND_LOOP_POINT
     groundScroll = groundScroll + GROUND_SCROLL_SPEED * dt
         % virtualWidth
+
+    player:update(dt)
 end
 
---[[
-    A callback that processes key strokes as they happen, just the once.
-    Does not account for keys that are held down, which is handled by a
-    separate function (`love.keyboard.isDown`). Useful for when we want
-    things to happen right away, just once, like when we want to quit.
-]]
 function love.keypressed(key)
     if key == 'escape' then
         love.event.quit()
     else
-        sounds['score']:play()
+        player:keypressed(key)
     end
 end
-
+ 
 function love.draw()
     love.graphics.clear(0, 0, 0)
     push:apply("start")
