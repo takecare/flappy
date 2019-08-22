@@ -17,8 +17,8 @@ local pipes = {}
 local pipeSpawnTimer = 0
 
 local lastGap = {
-    top = virtualHeight / 2 - 50, 
-    bottom = virtualHeight / 2 - 50
+    top = virtualHeight / 2 - 40, 
+    bottom = virtualHeight / 2 - 40
 }
 
 local background = love.graphics.newImage('assets/background.png')
@@ -67,8 +67,23 @@ function love.update(dt)
         table.insert(pipes, pipe)
         
         -- pipes[table.getn(pipes)] -- last element in array
-        lastGap.top = lastGap.top
-        lastGap.bottom = lastGap.bottom
+        local lastTop = lastGap.top
+        local lastBottom = lastGap.bottom
+
+        local delta = math.random() <= 0.5 and -50 or 50
+        local topDelta = delta
+        local bottomDelta = -delta
+
+        local newTop = lastTop + topDelta
+        local newBottom = lastBottom + bottomDelta
+
+        if (newTop < 50 or newBottom < 50) then
+            lastGap.top = lastTop
+            lastGap.bottom = lastBottom
+        else
+            lastGap.top = newTop
+            lastGap.bottom = newBottom
+        end
         pipeSpawnTimer = 0
     end
 
@@ -89,8 +104,6 @@ end
 function love.keypressed(key)
     if key == 'escape' then
         love.event.quit()
-    elseif key == 'd' then
-        debug.debug()
     else
         player:keypressed(key)
     end
