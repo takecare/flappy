@@ -17,7 +17,7 @@ function Pipe:renderAsTop()
     love.graphics.draw(
         self.sprite,
         self.x,
-        self.y,
+        self.y - self.height,
         math.rad(180),
         1,
         1,
@@ -30,7 +30,7 @@ function Pipe:renderAsBottom()
     love.graphics.draw(
         self.sprite,
         self.x,
-        self.y,
+        virtualHeight + -1 * self.y,
         0,
         1,
         1,

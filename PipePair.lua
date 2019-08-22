@@ -3,21 +3,22 @@ require 'Pipe'
 PipePair = Class{}
 
 local HEIGHT_DIFF = 0
-local MIN_GAP = 60
+local MIN_GAP_EACH_WAY = 40
 
-function PipePair:init(sprite, lastY, scrollSpeed)
+-- TODO init from a PipePair
+-- TODO guarantee that top pipe has a min height
+-- TODO guarantee that bottom pipe has a min height
+
+function PipePair:init(sprite, gapStart, gapEnd, scrollSpeed)
     self.scrollSpeed = scrollSpeed
 
-    local randomSign = math.random() >= 0.5 and 1 or -1
     local height = sprite:getHeight()
-
     local x = virtualWidth + sprite:getWidth()
-    local y = -height + lastY
-    local topY = y + HEIGHT_DIFF * randomSign
-    local bottomY = topY + height + HEIGHT_DIFF * (randomSign * -1)
+    local topTubeY = gapStart
+    local bottomTubeY = gapEnd
 
-    self.topPipe = Pipe(sprite, x, topY, scrollSpeed)
-    self.bottomPipe = Pipe(sprite, x, bottomY, scrollSpeed)
+    self.topPipe = Pipe(sprite, x, topTubeY, scrollSpeed)
+    self.bottomPipe = Pipe(sprite, x, bottomTubeY, scrollSpeed)
 end
 
 function PipePair:update(dt)

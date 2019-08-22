@@ -16,7 +16,10 @@ local pipeSprite = love.graphics.newImage('assets/pipe.png')
 local pipes = {}
 local pipeSpawnTimer = 0
 
-local lastPipeY = virtualHeight / 2
+local lastGap = {
+    top = virtualHeight / 2 - 50, 
+    bottom = virtualHeight / 2 - 50
+}
 
 local background = love.graphics.newImage('assets/background.png')
 local backgroundScroll = 0
@@ -40,8 +43,6 @@ function love.load()
         ['score'] = love.audio.newSource('assets/score.wav', 'static'),
     }
  
-pp = PipePair(pipeSprite, virtualHeight / 2, -GROUND_SCROLL_SPEED)
-
     push:setupScreen(virtualWidth, virtualHeight, windowWidth, windowHeight, {
         fullscreen = false,
         resizable = true, 
@@ -57,14 +58,19 @@ end
 function love.update(dt)
     pipeSpawnTimer = pipeSpawnTimer + dt
     if pipeSpawnTimer >= 2 then
-        local pipe = PipePair(pipeSprite, lastPipeY, -GROUND_SCROLL_SPEED)
+        local pipe = PipePair(
+            pipeSprite,
+            lastGap.top,
+            lastGap.bottom,
+            -GROUND_SCROLL_SPEED
+        )
         table.insert(pipes, pipe)
-        lastPipeY = pipes[table.getn(pipes)].bottomPipe.y
-        print(lastPipeY)
+        
+        -- pipes[table.getn(pipes)] -- last element in array
+        lastGap.top = lastGap.top
+        lastGap.bottom = lastGap.bottom
         pipeSpawnTimer = 0
     end
-
-pp:update(dt)
 
     backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt)
         % BACKGROUND_LOOP_POINT
@@ -103,9 +109,6 @@ function love.draw()
     love.graphics.draw(ground, -groundScroll, virtualHeight - ground:getHeight())
 
     player:render()
-
-pp:render()
-love.graphics.rectangle('fill', virtualWidth/2, virtualHeight/2, 50, 10)
 
     push:apply("end")
 end
