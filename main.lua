@@ -81,6 +81,9 @@ function love.update(dt)
     player:update(dt)
     for k, pipe in pairs(pipes) do
         pipe:update(dt)
+        if (pipe:collidesWith(player)) then
+            sounds['score']:play()
+        end
     end
 
     for k, pipe in pairs(pipes) do
@@ -88,30 +91,6 @@ function love.update(dt)
             table.remove(pipes, k)
             -- addPipe() -- TODO fix this bug
         end
-    end
-end
-
-function addPipe(startX)
-    local x = startX ~= nil and startX or pipes[table.getn(pipes)].startX
-    local lastTop = lastGap.top
-    local lastBottom = lastGap.bottom
-
-    local pipe = PipePair(pipeSprite, x, lastTop, lastBottom, -GROUND_SCROLL_SPEED)
-    table.insert(pipes, pipe)
-
-    local gap = GAP_DELTAS[math.random(1, table.getn(GAP_DELTAS))]
-    -- move gap upwards or downwards
-    local delta = math.random() <= 0.5 and -gap or gap
-    local newTop = lastTop + delta
-    local newBottom = lastBottom - delta
-
-    -- ensure gap does not go over thresholds
-    if (newTop < 40 or newBottom < 40) then
-        lastGap.top = lastTop
-        lastGap.bottom = lastBottom
-    else
-        lastGap.top = newTop
-        lastGap.bottom = newBottom
     end
 end
 
@@ -138,4 +117,28 @@ function love.draw()
     player:render()
 
     push:apply('end')
+end
+
+function addPipe(startX)
+    local x = startX ~= nil and startX or pipes[table.getn(pipes)].startX
+    local lastTop = lastGap.top
+    local lastBottom = lastGap.bottom
+
+    local pipe = PipePair(pipeSprite, x, lastTop, lastBottom, -GROUND_SCROLL_SPEED)
+    table.insert(pipes, pipe)
+
+    local gap = GAP_DELTAS[math.random(1, table.getn(GAP_DELTAS))]
+    -- move gap upwards or downwards
+    local delta = math.random() <= 0.5 and -gap or gap
+    local newTop = lastTop + delta
+    local newBottom = lastBottom - delta
+
+    -- ensure gap does not go over thresholds
+    if (newTop < 40 or newBottom < 40) then
+        lastGap.top = lastTop
+        lastGap.bottom = lastBottom
+    else
+        lastGap.top = newTop
+        lastGap.bottom = newBottom
+    end
 end

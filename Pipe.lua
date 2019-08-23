@@ -42,3 +42,8 @@ end
 function Pipe:isPastScreen()
     return self.x < -self.width
 end
+
+function Pipe:collidesWith(box)
+    return self.x < box.x + box.width and self.x + self.width > box.x
+        and self.y < box.y + box.height and self.y + self.height > box.y
+end

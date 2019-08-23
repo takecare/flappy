@@ -43,3 +43,7 @@ end
 function PipePair:isPastScreen()
     return self.topPipe:isPastScreen()
 end
+
+function PipePair:collidesWith(box)
+    return self.topPipe:collidesWith(box) or self.bottomPipe:collidesWith(box)
+end
