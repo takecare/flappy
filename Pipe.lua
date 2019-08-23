@@ -21,7 +21,10 @@ function Pipe:render()
         self:renderAsBottom()
     end
 
+    local r, g, b, a = love.graphics.getColor()
+    love.graphics.setColor(1, 1, 1, 0.5)
     love.graphics.rectangle('fill', self:boundingBox().x, self:boundingBox().y, self:boundingBox().width, self:boundingBox().height)
+    love.graphics.setColor(r, g, b, a)
 end
 
 function Pipe:renderAsTop()
@@ -41,7 +44,7 @@ function Pipe:renderAsBottom()
     love.graphics.draw(
         self.sprite,
         self.x,
-        virtualHeight + -1 * self.y,
+        G_VIRTUAL_HEIGHT + -1 * self.y,
         0,
         1,
         1,
@@ -55,7 +58,7 @@ function Pipe:isPastScreen()
 end
 
 function Pipe:boundingBox()
-    local y = self.isTop and self.y - self.height or virtualHeight + -1 * self.y
+    local y = self.isTop and self.y - self.height or G_VIRTUAL_HEIGHT + -1 * self.y
     return {
         x = self.x + 2,
         y = y + 2,
