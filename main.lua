@@ -16,9 +16,10 @@ local pipeSprite = love.graphics.newImage('assets/pipe.png')
 local pipes = {}
 local pipeSpawnTimer = 0
 
+local GAP_DELTAS = { 0, 10, 20, 30, 40, 50 }
 local lastGap = {
-    top = virtualHeight / 2 - 40,
-    bottom = virtualHeight / 2 - 40
+    top = virtualHeight / 2 - GAP_DELTAS[6],
+    bottom = virtualHeight / 2 - GAP_DELTAS[6]
 }
 
 local background = love.graphics.newImage('assets/background.png')
@@ -86,20 +87,20 @@ end
 
 function addPipe(startX)
     local x = startX ~= nil and startX or pipes[table.getn(pipes)].x
-    local pipe = PipePair(pipeSprite, x, lastGap.top, lastGap.bottom, -GROUND_SCROLL_SPEED)
-    table.insert(pipes, pipe)
-
     local lastTop = lastGap.top
     local lastBottom = lastGap.bottom
 
-    local delta = math.random() <= 0.5 and -50 or 50
-    local topDelta = delta
-    local bottomDelta = -delta
+    local pipe = PipePair(pipeSprite, x, lastTop, lastBottom, -GROUND_SCROLL_SPEED)
+    table.insert(pipes, pipe)
 
-    local newTop = lastTop + topDelta
-    local newBottom = lastBottom + bottomDelta
+    -- move gap upwards or downwards
+    local gap = GAP_DELTAS[math.random(1, table.getn(GAP_DELTAS))]
+    local delta = math.random() <= 0.5 and -gap or gap
+    local newTop = lastTop + delta
+    local newBottom = lastBottom - delta
 
-    if (newTop < 50 or newBottom < 50) then
+    -- ensure gap does not go over thresholds
+    if (newTop < 40 or newBottom < 40) then
         lastGap.top = lastTop
         lastGap.bottom = lastBottom
     else

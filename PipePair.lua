@@ -5,6 +5,15 @@ PipePair = Class{}
 local MIN_HORIZONTAL_GAP = 40
 local EXTRA_GAP_SPACING = { 0, 5, 10, 15, 20, 25, 30, 35 }
 
+--[[
+    | | gapStart is measured    | |
+    |_| from the top            | | <- in this pipe pair,
+                                |-| gapStart = gapEnd = virtualHeight / 2
+     _  gapEnd is measured      | |
+    | | from the bottom         | |
+    | |
+]]
+
 function PipePair:init(sprite, x, gapStart, gapEnd, scrollSpeed) 
     self.scrollSpeed = scrollSpeed
 
@@ -15,6 +24,8 @@ function PipePair:init(sprite, x, gapStart, gapEnd, scrollSpeed)
     local bottomTubeY = gapEnd
 
     self.x = pipeX
+    self.gapStart = topTubeY
+    self.gapEnd = bottomTubeY
     self.topPipe = Pipe(sprite, pipeX, topTubeY, scrollSpeed)
     self.bottomPipe = Pipe(sprite, pipeX, bottomTubeY, scrollSpeed)
 end
