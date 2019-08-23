@@ -81,7 +81,7 @@ function love.update(dt)
     player:update(dt)
     for k, pipe in pairs(pipes) do
         pipe:update(dt)
-        if (pipe:collidesWith(player)) then
+        if (pipe:collidesWith(player:boundingBox())) then
             sounds['score']:play()
         end
     end

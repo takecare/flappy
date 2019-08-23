@@ -26,8 +26,8 @@ function PipePair:init(sprite, startX, gapStart, gapEnd, scrollSpeed)
     self.startX = pipeX
     self.gapStart = topTubeY
     self.gapEnd = bottomTubeY
-    self.topPipe = Pipe(sprite, pipeX, topTubeY, scrollSpeed)
-    self.bottomPipe = Pipe(sprite, pipeX, bottomTubeY, scrollSpeed)
+    self.topPipe = Pipe(sprite, 'top', pipeX, topTubeY, scrollSpeed)
+    self.bottomPipe = Pipe(sprite, 'bottom', pipeX, bottomTubeY, scrollSpeed)
 end
 
 function PipePair:update(dt)
@@ -36,8 +36,8 @@ function PipePair:update(dt)
 end
 
 function PipePair:render()
-    self.topPipe:renderAsTop()
-    self.bottomPipe:renderAsBottom()
+    self.topPipe:render()
+    self.bottomPipe:render()
 end
 
 function PipePair:isPastScreen()
