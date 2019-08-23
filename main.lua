@@ -22,14 +22,16 @@ local lastGap = {
     bottom = virtualHeight / 2 - GAP_DELTAS[6]
 }
 
+local BASE_SPEED = 10
+
 local background = love.graphics.newImage('assets/background.png')
 local backgroundScroll = 0
-local BACKGROUND_SCROLL_SPEED = 10
+local BACKGROUND_SCROLL_SPEED = BASE_SPEED
 local BACKGROUND_LOOP_POINT = 413
 
 local ground = love.graphics.newImage('assets/ground.png')
 local groundScroll = 0
-local GROUND_SCROLL_SPEED = 60
+local GROUND_SCROLL_SPEED = BASE_SPEED * 6
 
 function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -44,7 +46,7 @@ function love.load()
         ['score'] = love.audio.newSource('assets/score.wav', 'static')
     }
 
-    for i = 0,3 do
+    for i = 0,5 do
         addPipe(virtualWidth + 200 * i)
     end
 
@@ -79,22 +81,26 @@ function love.update(dt)
     player:update(dt)
     for k, pipe in pairs(pipes) do
         pipe:update(dt)
+    end
+
+    for k, pipe in pairs(pipes) do
         if (pipe:isPastScreen()) then
             table.remove(pipes, k)
+            -- addPipe() -- TODO fix this bug
         end
     end
 end
 
 function addPipe(startX)
-    local x = startX ~= nil and startX or pipes[table.getn(pipes)].x
+    local x = startX ~= nil and startX or pipes[table.getn(pipes)].startX
     local lastTop = lastGap.top
     local lastBottom = lastGap.bottom
 
     local pipe = PipePair(pipeSprite, x, lastTop, lastBottom, -GROUND_SCROLL_SPEED)
     table.insert(pipes, pipe)
 
-    -- move gap upwards or downwards
     local gap = GAP_DELTAS[math.random(1, table.getn(GAP_DELTAS))]
+    -- move gap upwards or downwards
     local delta = math.random() <= 0.5 and -gap or gap
     local newTop = lastTop + delta
     local newBottom = lastBottom - delta
