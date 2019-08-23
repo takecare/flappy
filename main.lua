@@ -17,7 +17,7 @@ local pipes = {}
 local pipeSpawnTimer = 0
 
 local lastGap = {
-    top = virtualHeight / 2 - 40, 
+    top = virtualHeight / 2 - 40,
     bottom = virtualHeight / 2 - 40
 }
 
@@ -40,15 +40,25 @@ function love.load()
     love.graphics.setFont(font)
 
     sounds = {
-        ['score'] = love.audio.newSource('assets/score.wav', 'static'),
+        ['score'] = love.audio.newSource('assets/score.wav', 'static')
     }
- 
-    push:setupScreen(virtualWidth, virtualHeight, windowWidth, windowHeight, {
-        fullscreen = false,
-        resizable = true, 
-        vsync = true,
-        pixelperfect = true
-    })
+
+    for i = 0,3 do
+        addPipe(virtualWidth + 200 * i)
+    end
+
+    push:setupScreen(
+        virtualWidth,
+        virtualHeight,
+        windowWidth,
+        windowHeight,
+        {
+            fullscreen = false,
+            resizable = true,
+            vsync = true,
+            pixelperfect = true
+        }
+    )
 end
 
 function love.resize(w, h)
@@ -58,39 +68,12 @@ end
 function love.update(dt)
     pipeSpawnTimer = pipeSpawnTimer + dt
     if pipeSpawnTimer >= 2 then
-        local pipe = PipePair(
-            pipeSprite,
-            lastGap.top,
-            lastGap.bottom,
-            -GROUND_SCROLL_SPEED
-        )
-        table.insert(pipes, pipe)
-        
-        -- pipes[table.getn(pipes)] -- last element in array
-        local lastTop = lastGap.top
-        local lastBottom = lastGap.bottom
-
-        local delta = math.random() <= 0.5 and -50 or 50
-        local topDelta = delta
-        local bottomDelta = -delta
-
-        local newTop = lastTop + topDelta
-        local newBottom = lastBottom + bottomDelta
-
-        if (newTop < 50 or newBottom < 50) then
-            lastGap.top = lastTop
-            lastGap.bottom = lastBottom
-        else
-            lastGap.top = newTop
-            lastGap.bottom = newBottom
-        end
+        addPipe()
         pipeSpawnTimer = 0
     end
 
-    backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt)
-        % BACKGROUND_LOOP_POINT
-    groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt)
-        % virtualWidth
+    backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt) % BACKGROUND_LOOP_POINT
+    groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt) % virtualWidth
 
     player:update(dt)
     for k, pipe in pairs(pipes) do
@@ -101,6 +84,30 @@ function love.update(dt)
     end
 end
 
+function addPipe(startX)
+    local x = startX ~= nil and startX or pipes[table.getn(pipes)].x
+    local pipe = PipePair(pipeSprite, x, lastGap.top, lastGap.bottom, -GROUND_SCROLL_SPEED)
+    table.insert(pipes, pipe)
+
+    local lastTop = lastGap.top
+    local lastBottom = lastGap.bottom
+
+    local delta = math.random() <= 0.5 and -50 or 50
+    local topDelta = delta
+    local bottomDelta = -delta
+
+    local newTop = lastTop + topDelta
+    local newBottom = lastBottom + bottomDelta
+
+    if (newTop < 50 or newBottom < 50) then
+        lastGap.top = lastTop
+        lastGap.bottom = lastBottom
+    else
+        lastGap.top = newTop
+        lastGap.bottom = newBottom
+    end
+end
+
 function love.keypressed(key)
     if key == 'escape' then
         love.event.quit()
@@ -108,10 +115,10 @@ function love.keypressed(key)
         player:keypressed(key)
     end
 end
- 
+
 function love.draw()
     love.graphics.clear(0, 0, 0)
-    push:apply("start")
+    push:apply('start')
 
     love.graphics.draw(background, -backgroundScroll, 0)
 
@@ -123,5 +130,5 @@ function love.draw()
 
     player:render()
 
-    push:apply("end")
+    push:apply('end')
 end

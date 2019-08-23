@@ -4,7 +4,7 @@ local GRAVITY = 20
 local JUMP_SPEED = -10
 
 function Player:init(x, y)
-    self.sprite = love.graphics.newImage("assets/bird.png")
+    self.sprite = love.graphics.newImage('assets/bird.png')
     self.x = x ~= nil and x or virtualWidth / 2
     self.y = y ~= nil and y or virtualHeight / 2
     self.dy = 0

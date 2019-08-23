@@ -2,23 +2,19 @@ require 'Pipe'
 
 PipePair = Class{}
 
-local HEIGHT_DIFF = 0
-local MIN_GAP_EACH_WAY = 40
+local MIN_HORIZONTAL_GAP = 40
 local EXTRA_GAP_SPACING = { 0, 5, 10, 15, 20, 25, 30, 35 }
 
--- TODO init from a PipePair
--- TODO guarantee that top pipe has a min height
--- TODO guarantee that bottom pipe has a min height
-
-function PipePair:init(sprite, gapStart, gapEnd, scrollSpeed)
+function PipePair:init(sprite, x, gapStart, gapEnd, scrollSpeed) 
     self.scrollSpeed = scrollSpeed
 
     local height = sprite:getHeight()
     local extraSpacing = EXTRA_GAP_SPACING[math.random(1, table.getn(EXTRA_GAP_SPACING))]
-    local pipeX = virtualWidth + sprite:getWidth() + extraSpacing
+    local pipeX = x + sprite:getWidth() + extraSpacing + MIN_HORIZONTAL_GAP
     local topTubeY = gapStart
     local bottomTubeY = gapEnd
 
+    self.x = pipeX
     self.topPipe = Pipe(sprite, pipeX, topTubeY, scrollSpeed)
     self.bottomPipe = Pipe(sprite, pipeX, bottomTubeY, scrollSpeed)
 end
