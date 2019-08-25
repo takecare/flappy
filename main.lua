@@ -17,7 +17,7 @@ require 'states/ScoreState'
 local background
 local backgroundScroll = 0
 local BACKGROUND_SCROLL_SPEED = 10
-local BACKGROUND_LOOP_POINT = 413
+local BACKGROUND_LOOP_POINT = 568
 
 local ground
 local groundScroll = 0
