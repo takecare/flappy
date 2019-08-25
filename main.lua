@@ -15,12 +15,24 @@ require 'states/TitleScreenState'
 require 'states/PlayState'
 require 'states/ScoreState'
 
+local background
+local backgroundScroll = 0
+local BACKGROUND_SCROLL_SPEED = 10
+local BACKGROUND_LOOP_POINT = 413
+
+local ground
+local groundScroll = 0
+local GROUND_SCROLL_SPEED = 10 * 6
+
 function love.load()
     if arg[#arg] == "-debug" then require("mobdebug").start() end -- enable zerobrane debugging
   
     love.graphics.setDefaultFilter('nearest', 'nearest')
     love.window.setTitle('Floppy Bird')
     math.randomseed(os.time())
+
+    background = love.graphics.newImage('assets/background.png')
+    ground = love.graphics.newImage('assets/ground.png')
 
     gSounds = {
         ['score'] = love.audio.newSource('assets/score.wav', 'static')
@@ -35,7 +47,7 @@ function love.load()
     gStateMachine =
         StateMachine {
         ['title'] = function() return TitleScreenState() end,
-        ['play'] = function() return PlayState() end,
+        ['play'] = function() return PlayState(GROUND_SCROLL_SPEED) end,
         ['score'] = function() return ScoreState() end
     }
     gStateMachine:change('title')
@@ -59,6 +71,9 @@ function love.resize(w, h)
 end
 
 function love.update(dt)
+    backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt) % BACKGROUND_LOOP_POINT
+    groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt) % G_VIRTUAL_WIDTH
+
     gStateMachine:update(dt)
 end
 
@@ -69,6 +84,10 @@ end
 function love.draw()
     love.graphics.clear(0, 0, 0)
     push:apply('start')
+
+    love.graphics.draw(background, -backgroundScroll, 0)
     gStateMachine:render()
+    love.graphics.draw(ground, -groundScroll, G_VIRTUAL_HEIGHT - ground:getHeight())
+
     push:apply('end')
 end
