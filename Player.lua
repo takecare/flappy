@@ -31,7 +31,7 @@ function Player:render()
         self.height/2
     )
 
-    self:renderBoundingBox()
+    -- self:renderBoundingBox()
 end
 
 function Player:renderBoundingBox()

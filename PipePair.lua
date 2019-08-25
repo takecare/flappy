@@ -39,7 +39,7 @@ end
 function PipePair:render()
     self.topPipe:render()
     self.bottomPipe:render()
-    self:renderBoundingBox()
+    -- self:renderBoundingBox()
 end
 
 function PipePair:renderBoundingBox()
