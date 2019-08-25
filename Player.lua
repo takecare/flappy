@@ -46,3 +46,7 @@ function Player:boundingBox()
         height = self.height - 4,
     }
 end
+
+function Player:isPast(box)
+    return self.x > box.x + box.width
+end

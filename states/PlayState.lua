@@ -44,7 +44,6 @@ end
 
 function PlayState:exit()
     pipes = {}
-    player = nil
     background = nil
     ground = nil
     pipeSprite = nil
@@ -65,13 +64,17 @@ function PlayState:update(dt)
         pipe:update(dt)
         if (pipe:collidesWith(player:boundingBox())) then
             gSounds['score']:play()
+            gStateMachine:change('score')
         end
     end
 
     for k, pipe in pairs(pipes) do
-        if (pipe:isPastScreen()) then
+        if (pipe:isNotScored() and player:isPast(pipe:boundingBox())) then
+            pipe:markAsScored()
+            gScore = gScore + 1
+        elseif (pipe:isPastScreen()) then
             table.remove(pipes, k)
-        -- addPipe() -- TODO fix this bug
+            -- addPipe() -- TODO fix this bug
         end
     end
 end
@@ -94,6 +97,12 @@ function PlayState:render()
     love.graphics.draw(ground, -groundScroll, G_VIRTUAL_HEIGHT - ground:getHeight())
 
     player:render()
+    renderScore()
+end
+
+function renderScore()
+    love.graphics.setFont(gMediumFont)
+    love.graphics.printf(gScore, 0, 10, G_VIRTUAL_WIDTH, 'center')
 end
 
 function addPipe(startX)

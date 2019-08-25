@@ -20,7 +20,9 @@ function Pipe:render()
     else
         self:renderAsBottom()
     end
+end
 
+function renderBoundingBox()
     local r, g, b, a = love.graphics.getColor()
     love.graphics.setColor(1, 1, 1, 0.5)
     love.graphics.rectangle('fill', self:boundingBox().x, self:boundingBox().y, self:boundingBox().width, self:boundingBox().height)

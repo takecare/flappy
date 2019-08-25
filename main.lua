@@ -7,12 +7,17 @@ local windowWidth, windowHeight = windowWidth * 0.6, windowHeight * 0.6
 G_VIRTUAL_WIDTH = 512
 G_VIRTUAL_HEIGHT = 288
 
+gScore = 0
+
 require 'StateMachine'
 require 'states/BaseState'
-require 'states/PlayState'
 require 'states/TitleScreenState'
+require 'states/PlayState'
+require 'states/ScoreState'
 
 function love.load()
+    if arg[#arg] == "-debug" then require("mobdebug").start() end -- enable zerobrane debugging
+  
     love.graphics.setDefaultFilter('nearest', 'nearest')
     love.window.setTitle('Floppy Bird')
     math.randomseed(os.time())
@@ -30,7 +35,8 @@ function love.load()
     gStateMachine =
         StateMachine {
         ['title'] = function() return TitleScreenState() end,
-        ['play'] = function() return PlayState() end
+        ['play'] = function() return PlayState() end,
+        ['score'] = function() return ScoreState() end
     }
     gStateMachine:change('title')
 

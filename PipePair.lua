@@ -23,6 +23,7 @@ function PipePair:init(sprite, startX, gapStart, gapEnd, scrollSpeed)
     local topTubeY = gapStart
     local bottomTubeY = gapEnd
 
+    self.scored = false
     self.startX = pipeX
     self.gapStart = topTubeY
     self.gapEnd = bottomTubeY
@@ -38,12 +39,39 @@ end
 function PipePair:render()
     self.topPipe:render()
     self.bottomPipe:render()
+    self:renderBoundingBox()
+end
+
+function PipePair:renderBoundingBox()
+    local r, g, b, a = love.graphics.getColor()
+    love.graphics.setColor(1, 1, 1, 0.5)
+    love.graphics.rectangle('fill', self:boundingBox().x, self:boundingBox().y, self:boundingBox().width, self:boundingBox().height)
+    love.graphics.setColor(r, g, b, a)
 end
 
 function PipePair:isPastScreen()
     return self.topPipe:isPastScreen()
 end
 
+function PipePair:isNotScored()
+    return not self.scored
+end
+
+function PipePair:markAsScored()
+    self.scored = true
+end
+
 function PipePair:collidesWith(box)
     return self.topPipe:collidesWith(box) or self.bottomPipe:collidesWith(box)
+end
+
+function PipePair:boundingBox()
+    local topBox = self.topPipe:boundingBox()
+    local bottomBox = self.bottomPipe:boundingBox()
+    return {
+        x = topBox.x,
+        y = 0,
+        width = topBox.width,
+        height = G_VIRTUAL_HEIGHT -- we assume a pair takes up all the height available
+    }
 end
