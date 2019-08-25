@@ -10,8 +10,8 @@ end
 
 function TitleScreenState:render()
     love.graphics.setFont(gFlappyFont)
-    love.graphics.printf('Floppy Bird', 0, 64, G_VIRTUAL_WIDTH, 'center')
+    love.graphics.printf('Floppy Bird', 0, G_VIRTUAL_HEIGHT * 0.05, G_VIRTUAL_WIDTH, 'center')
 
     love.graphics.setFont(gMediumFont)
-    love.graphics.printf('Press Enter', 0, 100, G_VIRTUAL_WIDTH, 'center')
+    love.graphics.printf('Press Enter', 0, G_VIRTUAL_HEIGHT * 0.6, G_VIRTUAL_WIDTH, 'center')
 end

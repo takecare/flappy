@@ -80,6 +80,7 @@ function PlayState:render()
     end
 
     player:render()
+
     renderScore()
 end
 

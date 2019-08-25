@@ -18,18 +18,27 @@ function Player:update(dt)
 end
 
 function Player:render()
+    local rotation = self.dy < 0 and math.rad(-2) or math.rad(2)
+
     love.graphics.draw(
         self.sprite,
         self.x,
         self.y,
-        0,
+        rotation,
         1,
         1,
-        0,
-        0
+        self.width/2,
+        self.height/2
     )
 
+    self:renderBoundingBox()
+end
+
+function Player:renderBoundingBox()
+    local r, g, b, a = love.graphics.getColor()
+    love.graphics.setColor(1, 1, 1, 0.5)
     love.graphics.rectangle('fill', self:boundingBox().x, self:boundingBox().y, self:boundingBox().width, self:boundingBox().height)
+    love.graphics.setColor(r, g, b, a)
 end
 
 function Player:keypressed(key)
@@ -40,8 +49,8 @@ end
 
 function Player:boundingBox()
     return {
-        x = self.x + 2,
-        y = self.y + 2,
+        x = self.x - self.width/2 + 2,
+        y = self.y - self.height/2 + 2,
         width = self.width - 4,
         height = self.height - 4,
     }
