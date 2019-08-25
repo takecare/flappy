@@ -9,6 +9,8 @@ local pipeSprite
 local pipes
 local pipeSpawnTimer
 
+local INITIAL_HORIZONAL_GAP = 200
+
 local GAP_DELTAS = {0, 10, 20, 30, 40, 50}
 local lastGap = {
     top = G_VIRTUAL_HEIGHT / 2 - GAP_DELTAS[6],
@@ -25,13 +27,13 @@ end
 function PlayState:enter() 
     pipeSprite = love.graphics.newImage('assets/pipe.png')
 
-    player = Player(G_VIRTUAL_WIDTH / 10, G_VIRTUAL_HEIGHT / 2)
+    player = Player(G_VIRTUAL_WIDTH / 3, G_VIRTUAL_HEIGHT / 2)
     self.score = 0
 
     pipes = {}
     pipeSpawnTimer = 0
     for i = 0,5 do
-        self:addPipe(G_VIRTUAL_WIDTH + 200 * i)
+        self:addPipe(G_VIRTUAL_WIDTH + INITIAL_HORIZONAL_GAP * i)
     end
 end
 

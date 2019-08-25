@@ -6,7 +6,7 @@ end
 
 function ScoreState:keyPressed(key)
     if key == 'enter' or key == 'return' then
-        gStateMachine:change('play')
+        gStateMachine:change('countdown')
     elseif key == 'escape' then
         gStateMachine:change('title')
     end
@@ -18,11 +18,11 @@ end
 
 function ScoreState:render()
     love.graphics.setFont(gFlappyFont)
-    love.graphics.printf(self.score, 0, G_VIRTUAL_HEIGHT * 0.1, G_VIRTUAL_WIDTH, 'center')
+    love.graphics.printf('oops!', 0, G_VIRTUAL_HEIGHT * 0.1, G_VIRTUAL_WIDTH, 'center')
 
-    love.graphics.setFont(gMediumFont)
-    love.graphics.printf('Press Enter to try again', 0, G_VIRTUAL_HEIGHT * 0.4, G_VIRTUAL_WIDTH, 'center')
+    love.graphics.setFont(gHugeFont)
+    love.graphics.printf('final score: ' .. self.score, 0, G_VIRTUAL_HEIGHT * 0.3, G_VIRTUAL_WIDTH, 'center')
 
     love.graphics.setFont(gSmallFont)
-    love.graphics.printf('Press Escape to quit', 0, G_VIRTUAL_HEIGHT * 0.7, G_VIRTUAL_WIDTH, 'center')
+    love.graphics.printf('enter to try again\nescape to quit', 0, G_VIRTUAL_HEIGHT * 0.65, G_VIRTUAL_WIDTH, 'center')
 end

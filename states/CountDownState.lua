@@ -3,7 +3,7 @@ CountDownState = Class {__includes = BaseState}
 local timer
 
 function CountDownState:enter()
-    timer = 4
+    timer = 3
 end
 
 function CountDownState:update(dt)
@@ -15,8 +15,8 @@ function CountDownState:update(dt)
 end
 
 function CountDownState:render()
-    local countdown = timer - timer % 1
-    local toDisplay = countdown >= 0 and countdown or 0
+    local countdown = math.ceil(timer)
+    local toDisplay = countdown >= 1 and countdown or 1
     love.graphics.setFont(gMediumFont)
     love.graphics.printf(toDisplay, 0, G_VIRTUAL_HEIGHT / 2, G_VIRTUAL_WIDTH, 'center')
 end
