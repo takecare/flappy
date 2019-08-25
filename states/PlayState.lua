@@ -15,8 +15,10 @@ local lastGap = {
     bottom = G_VIRTUAL_HEIGHT / 2 - GAP_DELTAS[6]
 }
 
-function PlayState:init(scrollSpeed)
+function PlayState:init(scrollSpeed, topLimit, bottomLimit)
     self.scrollSpeed = scrollSpeed
+    self.topLimit = topLimit
+    self.bottomLimit = bottomLimit
 end
 
 function PlayState:enter() 
@@ -47,11 +49,15 @@ function PlayState:update(dt)
     end
 
     player:update(dt)
+
+    if player.y < self.topLimit or player.y > self.bottomLimit then
+        collisionOccurred()
+    end
+
     for k, pipe in pairs(pipes) do
         pipe:update(dt)
         if (pipe:collidesWith(player:boundingBox())) then
-            gSounds['score']:play()
-            gStateMachine:change('score')
+            collisionOccurred()
         end
     end
 
@@ -64,6 +70,11 @@ function PlayState:update(dt)
             -- self:addPipe() -- TODO fix this bug
         end
     end
+end
+
+function collisionOccurred()
+    gSounds['collision']:play()
+    gStateMachine:change('score')
 end
 
 function PlayState:keyPressed(key)

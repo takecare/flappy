@@ -35,7 +35,7 @@ function love.load()
     ground = love.graphics.newImage('assets/ground.png')
 
     gSounds = {
-        ['score'] = love.audio.newSource('assets/score.wav', 'static')
+        ['collision'] = love.audio.newSource('assets/score.wav', 'static')
     }
 
     gSmallFont = love.graphics.newFont('assets/font.ttf', G_VIRTUAL_WIDTH * 0.06)
@@ -47,7 +47,14 @@ function love.load()
     gStateMachine =
         StateMachine {
         ['title'] = function() return TitleScreenState() end,
-        ['play'] = function() return PlayState(GROUND_SCROLL_SPEED) end,
+        ['play'] = function() 
+            local playState = PlayState(
+                GROUND_SCROLL_SPEED,
+                0,
+                G_VIRTUAL_HEIGHT - ground:getHeight()
+            )
+            return playState
+        end,
         ['score'] = function() return ScoreState() end
     }
     gStateMachine:change('title')
