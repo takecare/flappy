@@ -75,11 +75,18 @@ function PlayState:update(dt)
         end
     end
 
+    loopMusic()
+end
+
+-- ensure we loop the background music. bit of a hacky way to achieve it...
+function loopMusic()
+    local loopStart = 2
+    local loopEnd = 34
     local time = gSounds['music']:tell()
-    if time < 2 or time > 34 then
-        gSounds['music']:seek(2 + (time - 34))
-    elseif time < 2 and time > 34 then
-        gSounds['music']:seek(2 + (time - 34))
+    if time < loopStart or time > loopEnd then
+        gSounds['music']:seek(loopStart + (time - loopEnd))
+    elseif time < loopStart and time > loopEnd then
+        gSounds['music']:seek(loopStart + (time - loopEnd))
     end
 end
 
