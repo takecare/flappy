@@ -43,8 +43,13 @@ end
 
 function Player:keypressed(key)
     if key == "space" then
-        self.dy = JUMP_SPEED
+        self:jump()
     end
+end
+
+function Player:jump()
+    self.dy = JUMP_SPEED
+    gSounds['jump']:play()
 end
 
 function Player:boundingBox()

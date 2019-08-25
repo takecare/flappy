@@ -66,6 +66,7 @@ function PlayState:update(dt)
 
     for k, pipe in pairs(pipes) do
         if (pipe:isNotScored() and player:isPast(pipe:boundingBox())) then
+            gSounds['score']:play()
             pipe:markAsScored()
             self.score = self.score + 1
         elseif (pipe:isPastScreen()) then
@@ -73,10 +74,17 @@ function PlayState:update(dt)
             -- self:addPipe() -- TODO fix this bug
         end
     end
+
+    local time = gSounds['music']:tell()
+    if time < 2 or time > 34 then
+        gSounds['music']:seek(2 + (time - 34))
+    elseif time < 2 and time > 34 then
+        gSounds['music']:seek(2 + (time - 34))
+    end
 end
 
 function PlayState:collisionOccurred()
-    gSounds['collision']:play()
+    gSounds['hurt']:play()
     gStateMachine:change('score', { score = self.score })
 end
 

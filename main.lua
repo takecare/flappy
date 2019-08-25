@@ -34,7 +34,10 @@ function love.load()
     ground = love.graphics.newImage('assets/ground.png')
 
     gSounds = {
-        ['collision'] = love.audio.newSource('assets/score.wav', 'static')
+        ['music'] = love.audio.newSource('assets/bgmusic.wav', 'static'),
+        ['hurt'] = love.audio.newSource('assets/hurt.wav', 'static'),
+        ['jump'] = love.audio.newSource('assets/jump.wav', 'static'),
+        ['score'] = love.audio.newSource('assets/score.wav', 'static')
     }
 
     gSmallFont = love.graphics.newFont('assets/font.ttf', G_VIRTUAL_WIDTH * 0.06)
@@ -71,6 +74,9 @@ function love.load()
             pixelperfect = true
         }
     )
+
+    gSounds['music']:setLooping(true)
+    gSounds['music']:play()
 end
 
 function love.resize(w, h)
