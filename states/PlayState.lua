@@ -19,13 +19,14 @@ function PlayState:init(scrollSpeed, topLimit, bottomLimit)
     self.scrollSpeed = scrollSpeed
     self.topLimit = topLimit
     self.bottomLimit = bottomLimit
+    self.score = 0
 end
 
 function PlayState:enter() 
     pipeSprite = love.graphics.newImage('assets/pipe.png')
 
     player = Player(G_VIRTUAL_WIDTH / 10, G_VIRTUAL_HEIGHT / 2)
-    gScore = 0
+    self.score = 0
 
     pipes = {}
     pipeSpawnTimer = 0
@@ -51,20 +52,20 @@ function PlayState:update(dt)
     player:update(dt)
 
     if player.y < self.topLimit or player.y > self.bottomLimit then
-        collisionOccurred()
+        self:collisionOccurred()
     end
 
     for k, pipe in pairs(pipes) do
         pipe:update(dt)
         if (pipe:collidesWith(player:boundingBox())) then
-            collisionOccurred()
+            self:collisionOccurred()
         end
     end
 
     for k, pipe in pairs(pipes) do
         if (pipe:isNotScored() and player:isPast(pipe:boundingBox())) then
             pipe:markAsScored()
-            gScore = gScore + 1
+            self.score = self.score + 1
         elseif (pipe:isPastScreen()) then
             table.remove(pipes, k)
             -- self:addPipe() -- TODO fix this bug
@@ -72,9 +73,9 @@ function PlayState:update(dt)
     end
 end
 
-function collisionOccurred()
+function PlayState:collisionOccurred()
     gSounds['collision']:play()
-    gStateMachine:change('score')
+    gStateMachine:change('score', { score = self.score })
 end
 
 function PlayState:keyPressed(key)
@@ -92,12 +93,12 @@ function PlayState:render()
 
     player:render()
 
-    renderScore()
+    self:renderScore()
 end
 
-function renderScore()
+function PlayState:renderScore()
     love.graphics.setFont(gMediumFont)
-    love.graphics.printf(gScore, 0, 10, G_VIRTUAL_WIDTH, 'center')
+    love.graphics.printf(self.score, 0, 10, G_VIRTUAL_WIDTH, 'center')
 end
 
 function PlayState:addPipe(startX)

@@ -7,8 +7,6 @@ local windowWidth, windowHeight = windowWidth * 0.6, windowHeight * 0.6
 G_VIRTUAL_WIDTH = 512
 G_VIRTUAL_HEIGHT = 288
 
-gScore = 0
-
 require 'StateMachine'
 require 'states/BaseState'
 require 'states/TitleScreenState'

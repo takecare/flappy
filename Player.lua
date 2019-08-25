@@ -48,9 +48,9 @@ function Player:keypressed(key)
 end
 
 function Player:boundingBox()
-    return {
-        x = self.x - self.width/2 + 2,
-        y = self.y - self.height/2 + 2,
+    return { -- width/2 & height/2 to account for the offset of rotation
+        x = self.x - self.width / 2 + 2,
+        y = self.y - self.height / 2 + 2,
         width = self.width - 4,
         height = self.height - 4,
     }
