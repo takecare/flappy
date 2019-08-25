@@ -2,7 +2,7 @@ TitleScreenState = Class{__includes = BaseState}
 
 function TitleScreenState:keyPressed(key)
     if key == 'enter' or key == 'return' then
-        gStateMachine:change('play')
+        gStateMachine:change('countdown')
     elseif key == 'escape' then
         love.event.quit()
     end

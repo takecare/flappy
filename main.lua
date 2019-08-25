@@ -10,6 +10,7 @@ G_VIRTUAL_HEIGHT = 288
 require 'StateMachine'
 require 'states/BaseState'
 require 'states/TitleScreenState'
+require 'states/CountDownState'
 require 'states/PlayState'
 require 'states/ScoreState'
 
@@ -45,6 +46,7 @@ function love.load()
     gStateMachine =
         StateMachine {
         ['title'] = function() return TitleScreenState() end,
+        ['countdown'] = function() return CountDownState() end,
         ['play'] = function() 
             local playState = PlayState(
                 GROUND_SCROLL_SPEED,
