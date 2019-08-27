@@ -40,10 +40,10 @@ function love.load()
         ['score'] = love.audio.newSource('assets/score.wav', 'static')
     }
 
-    gSmallFont = love.graphics.newFont('assets/font.ttf', G_VIRTUAL_WIDTH * 0.06)
-    gMediumFont = love.graphics.newFont('assets/font.ttf', G_VIRTUAL_WIDTH * 0.08)
-    gFlappyFont = love.graphics.newFont('assets/font.ttf', G_VIRTUAL_WIDTH * 0.10)
-    gHugeFont = love.graphics.newFont('assets/font.ttf', G_VIRTUAL_WIDTH * 0.12)
+    gSmallFont = love.graphics.newFont('assets/flappy.ttf', G_VIRTUAL_WIDTH * 0.04)
+    gMediumFont = love.graphics.newFont('assets/flappy.ttf', G_VIRTUAL_WIDTH * 0.06)
+    gFlappyFont = love.graphics.newFont('assets/flappy.ttf', G_VIRTUAL_WIDTH * 0.08)
+    gHugeFont = love.graphics.newFont('assets/flappy.ttf', G_VIRTUAL_WIDTH * 0.1)
     love.graphics.setFont(gFlappyFont)
 
     gStateMachine =
